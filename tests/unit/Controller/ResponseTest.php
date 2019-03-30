@@ -46,17 +46,17 @@ class ResponseTest extends TestCase
 
     public function testGetResponseArray(): void
     {
-        $data = [
+        $payload = [
             'node1' => 'value 1',
             'node2' => 'value 2',
         ];
-        foreach ($data as $node => $value) {
+        foreach ($payload as $node => $value) {
             $this->response->setNode($node, $value);
         }
         $this->assertEquals([
             'success' => true,
             'errors' => [],
-            'data' => $data
+            'payload' => $payload
         ], $this->response->getResponseArray());
     }
 
