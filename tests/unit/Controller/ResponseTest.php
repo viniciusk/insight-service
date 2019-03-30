@@ -73,7 +73,7 @@ class ResponseTest extends TestCase
 
     public function testSetStatus(): void
     {
-        $this->response->setStatus(Response::RESPONSE_404_NOT_FOUND);
+        $this->response->setStatus(Response::RESPONSE_404_NOT_FOUND, true);
         $this->assertEquals(Response::RESPONSE_404_NOT_FOUND, $this->response->getStatus());
     }
 

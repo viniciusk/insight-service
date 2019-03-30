@@ -20,10 +20,17 @@ class Response
      * @var string $status
      */
     private $status;
+
     /**
      * @var bool determines whether the response is successful
      */
     protected $success = false;
+
+    /**
+     * @var bool whether the (occasional) error is transient or permanent
+     */
+    protected $transientError = false;
+
     /**
      * @var array $payload a set of information to follow with the response
      */
@@ -61,10 +68,14 @@ class Response
 
     /**
      * @param string $status
+     * @param bool $isError
      */
-    public function setStatus(string $status): void
+    public function setStatus(string $status, bool $isError = false): void
     {
         $this->status = $status;
+        if (true === $isError) {
+            $this->addError($status);
+        }
     }
 
 
@@ -88,6 +99,9 @@ class Response
         $responseArray = [];
         $responseArray['success'] = !$this->hasError();
         $responseArray['errors'] = $this->getErrors();
+        if (!empty($responseArray['errors'])) {
+            $responseArray['transient'] = $this->transientError;
+        }
         $responseArray['payload'] = $this->getPayload();
         return $responseArray;
     }

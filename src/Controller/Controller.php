@@ -60,7 +60,7 @@ class Controller
             $this->controller = $this->$routeController();
             return;
         }
-        $this->response->setStatus(Response::RESPONSE_404_NOT_FOUND);
+        $this->response->setStatus(Response::RESPONSE_404_NOT_FOUND, true);
     }
 
     /**
@@ -138,7 +138,7 @@ class Controller
                 return;
             }
         }
-        $this->response->setStatus(Response::RESPONSE_404_NOT_FOUND);
+        $this->response->setStatus(Response::RESPONSE_404_NOT_FOUND, true);
         $this->finish($outputBodyOnly);
     }
 
@@ -157,8 +157,8 @@ class Controller
      */
     public function finishWithInvalidRequestError(bool $outputBodyOnly = false): void
     {
+        $this->response->setStatus(Response::RESPONSE_400_BAD_REQUEST, true);
         $this->response->addError(ErrorMessagesInterface::INVALID_REQUEST);
-        $this->response->setStatus(Response::RESPONSE_400_BAD_REQUEST);
         $this->finish($outputBodyOnly);
     }
 
