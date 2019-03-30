@@ -1,1 +1,1 @@
-# insight-service
+Insight Service

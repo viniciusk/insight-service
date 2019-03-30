@@ -1,0 +1,21 @@
+{
+  "name": "cct/insight-service",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Vinícius Kienen",
+      "email": "viniciusk@gmail.com"
+    }
+  ],
+  "require": {
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6"
+  },
+  "autoload": {
+    "psr-4": {
+      "InsightService\\": "src/"
+    }
+  }
+}
