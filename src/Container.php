@@ -3,6 +3,7 @@
 namespace InsightService;
 
 
+use InsightService\Controller\Response;
 use InsightService\Error\ErrorHandler;
 use InsightService\Error\ErrorHandlerInterface;
 
@@ -18,9 +19,9 @@ class Container
     private $errorHandler;
 
     /**
-     * @var GenericService $genericService
-    private $genericService;
+     * @var Response $response
      */
+    private $response;
 
     /**
      * @return ErrorHandlerInterface
@@ -34,16 +35,16 @@ class Container
         return $this->errorHandler;
     }
 
-    /*
     /**
-     * @return GenericService
-    public function getGenericService(): GenericService
+     * @param bool $outputHeaders
+     * @return Response
+     */
+    public function getResponse(bool $outputHeaders = true): Response
     {
-        if ($this->genericService === null) {
-            $this->genericService = new GenericService($this->getErrorHandler(), new UserRepository($this->getRepositoryHandler()));
+        if ($this->response === null) {
+            $this->response = new Response($outputHeaders);
         }
 
-        return $this->genericService;
+        return $this->response;
     }
-    */
 }
