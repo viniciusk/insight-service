@@ -2,6 +2,7 @@
 require 'bootstrap.php';
 
 $container = new \InsightService\Container();
-$controller = new \InsightService\Controller\Controller($container, $_REQUEST ?? null);
+$response = new \InsightService\Controller\Response();
+$controller = new \InsightService\Controller\Controller($container, $response, $_REQUEST ?? null);
 $controller->run();
 exit;

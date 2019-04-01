@@ -45,12 +45,13 @@ class Controller
     /**
      * Controller constructor.
      * @param Container $container
+     * @param Response $response
      * @param array|null $params
      */
-    public function __construct(Container $container, ?array $params = null)
+    public function __construct(Container $container, Response $response, ?array $params = null)
     {
         $this->container = $container;
-        $this->response = new Response();
+        $this->response = $response;
         $this->resolveParams($params);
         if (null === $this->getRoute()) {
             $this->finishWithInvalidRequestError();
@@ -61,6 +62,7 @@ class Controller
             return;
         }
         $this->response->setStatus(Response::RESPONSE_404_NOT_FOUND, true);
+        $this->finish();
     }
 
     /**
@@ -126,40 +128,34 @@ class Controller
 
     /**
      * Runs the expected action
-     * @param bool $outputBodyOnly
      */
-    public function run(bool $outputBodyOnly = false): void
+    public function run(): void
     {
         $action = $this->getAction();
         if (method_exists($this->controller, $action)) {
             $this->controller->$action();
-            $this->finish($outputBodyOnly);
-            if ($outputBodyOnly) {
-                return;
-            }
+            $this->finish();
         }
         $this->response->setStatus(Response::RESPONSE_404_NOT_FOUND, true);
-        $this->finish($outputBodyOnly);
+        $this->finish();
     }
 
     /**
      * Terminates the execution through the Response
-     * @param bool $outputBodyOnly
      */
-    public function finish(bool $outputBodyOnly = false): void
+    public function finish(): void
     {
-        $this->response->finish($outputBodyOnly);
+        $this->response->finish();
     }
 
     /**
      * Adds an error and terminates the execution
-     * @param bool $outputBodyOnly
      */
-    public function finishWithInvalidRequestError(bool $outputBodyOnly = false): void
+    public function finishWithInvalidRequestError(): void
     {
         $this->response->setStatus(Response::RESPONSE_400_BAD_REQUEST, true);
         $this->response->addError(ErrorMessagesInterface::INVALID_REQUEST);
-        $this->finish($outputBodyOnly);
+        $this->finish();
     }
 
     /**
@@ -168,4 +164,6 @@ class Controller
     private function statusController(): ContextControllerInterface
     {
         return new StatusController($this);
-    }}
+    }
+
+}

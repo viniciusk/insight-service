@@ -13,7 +13,7 @@ class ResponseTest extends TestCase
 
     function setUp()
     {
-        $this->response = new Response();
+        $this->response = new Response(false);
     }
 
     public function testInstanceOfResponse(): void
@@ -91,6 +91,6 @@ class ResponseTest extends TestCase
             json_encode($this->response->getResponseArray())
         );
 
-        $this->response->finish(true);
+        $this->response->finish();
     }
 }

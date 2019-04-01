@@ -22,6 +22,11 @@ class Response
     private $status;
 
     /**
+     * @var bool $outputHeaders
+     */
+    private $outputHeaders;
+
+    /**
      * @var bool determines whether the response is successful
      */
     protected $success = false;
@@ -36,6 +41,14 @@ class Response
      */
     protected $payload = [];
 
+    /**
+     * Response constructor.
+     * @param bool $outputHeaders
+     */
+    public function __construct(bool $outputHeaders = true)
+    {
+        $this->outputHeaders = $outputHeaders;
+    }
 
     /**
      * @param string $node
@@ -108,18 +121,17 @@ class Response
 
 
     /**
-     * @param bool $outputBodyOnly
      * @return void
      */
-    public function finish(bool $outputBodyOnly = false): void
+    public function finish(): void
     {
-        if (!$outputBodyOnly) {
+        if (true === $this->outputHeaders) {
             $serverProtocol = $_SERVER['SERVER_PROTOCOL'] ?? '';
             header("{$serverProtocol} {$this->getStatus()}");
             header('Content-Type: application/json');
         }
         echo json_encode($this->getResponseArray());
-        if (!$outputBodyOnly) {
+        if (true === $this->outputHeaders) { // needed for phpunit tests for now
             exit(0);
         }
     }
